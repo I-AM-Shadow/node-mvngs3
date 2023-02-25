@@ -1,17 +1,11 @@
 {
   "main": "index.js",
   "name": "node-mvngs3",
-  "version": "0.0.0",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "dependencies": {
     "discord.js": "^14.7.1",
-    "dotenv": "^16.0.3",
-    "undici": "^5.20.0"
+    "dotenv": "^16.0.3"
   },
   "devDependencies": {
-    "eslint": "^8.34.0",
-    "init": "^0.1.2"
+    "eslint": "^8.34.0"
   }
 }

@@ -21,10 +21,13 @@ for (const file of commandFiles) {
     console.log(
       `[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`
     );
-    s;
   }
 }
-client.on(Events.InteractionCreate, (interaction) => {
+
+client.once(Events.ClientReady, (c) => {
+  console.log(`Ready! Logged in as ${c.user.tag}`);
+});
+client.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
   const command = interaction.client.commands.get(interaction.commandName);
 
@@ -33,25 +36,22 @@ client.on(Events.InteractionCreate, (interaction) => {
     return;
   }
 
-  (async () => {
-    try {
-      await command.execute(interaction);
-    } catch (error) {
-      console.error(error);
-      if (interaction.replied || interaction.deferred) {
-        await interaction.followUp({
-          content: 'There was an error while executing this command!',
-          ephemeral: true,
-        });
-      } else {
-        await interaction.reply({
-          content: 'There was an error while executing this command!',
-          ephemeral: true,
-        });
-      }
+  try {
+    await command.execute(interaction);
+  } catch (error) {
+    console.error(error);
+    if (interaction.replied || interaction.deferred) {
+      await interaction.followUp({
+        content: 'There was an error while executing this command!',
+        ephemeral: true,
+      });
+    } else {
+      await interaction.reply({
+        content: 'There was an error while executing this command!',
+        ephemeral: true,
+      });
     }
-  })();
+  }
+  console.log(interaction);
 });
-client.on(Events.ShardError, error => {
-	console.error('A websocket connection encountered an error:', error);
-});
+client.login(token);
